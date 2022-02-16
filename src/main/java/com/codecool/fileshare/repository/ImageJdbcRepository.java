@@ -48,7 +48,7 @@ public class ImageJdbcRepository implements ImageRepository{
         ConnectionData cn = new ConnectionData();
         Connection con = cn.getConnection();
         try {
-            PreparedStatement prep = con.prepareStatement("SELECT content from image WHERE id = ?;");
+            PreparedStatement prep = con.prepareStatement("SELECT content from image WHERE id::varchar = ?;");
             prep.setString(1,uuid);
             ResultSet res = prep.executeQuery();
             res.next();
