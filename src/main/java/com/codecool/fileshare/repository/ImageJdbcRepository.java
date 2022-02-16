@@ -34,7 +34,7 @@ public class ImageJdbcRepository implements ImageRepository{
             ps.setString(2,category);
             ps.setBytes(3,content.getBytes(StandardCharsets.UTF_8));
             ps.execute();
-            dataSource.getConnection().close();
+            ps.getConnection().close();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public class ImageJdbcRepository implements ImageRepository{
             rs.next();
             byte[] bytes=rs.getBytes(1);
             forTheReturn=new String(bytes, StandardCharsets.UTF_8);
-            dataSource.getConnection().close();
+            ps.getConnection().close();
         } catch (SQLException e){
             e.printStackTrace();
         }
