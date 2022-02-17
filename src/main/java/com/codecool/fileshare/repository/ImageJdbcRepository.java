@@ -52,7 +52,7 @@ public class ImageJdbcRepository implements ImageRepository{
 
     @Override
     public String readImage(String uuid) {
-        String sql="SELECT image from image WHERE id::varchar=?;";
+        String sql="SELECT content from image WHERE id::varchar=?;";
         String imageBase64String="";
         try(Connection conn=dataSource.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
