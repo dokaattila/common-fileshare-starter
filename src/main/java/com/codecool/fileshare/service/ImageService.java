@@ -1,23 +1,28 @@
 package com.codecool.fileshare.service;
 
+import com.codecool.fileshare.Util;
 import com.codecool.fileshare.dto.ImageDTO;
-import com.codecool.fileshare.repository.ImageRepository;
+import com.codecool.fileshare.entity.Image;
+import com.codecool.fileshare.repository.ImageJdbcRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 @Service
 public class ImageService {
 
     @Autowired
-    @Qualifier("jdbc")
-    ImageRepository imageRepository;
+    ImageJdbcRepository imageJdbcRepository;
 
-    public String storeImage(ImageDTO imageDTO, String category){
-        return imageRepository.storeImage(category, imageDTO.getImageData());
+    public Image storeImage(ImageDTO imageDTO, String category) {
+        UUID uuid = Util.uuidFromBase64(imageDTO.getImageData());
+        return imageJdbcRepository.save(new Image(uuid, category, imageDTO.getImageData().getBytes(StandardCharsets.UTF_8)));
     }
 
-    public ImageDTO getImage(String fileName){
-        return  new ImageDTO(imageRepository.readImage(fileName));
+    public Image getImage(String uuid) {
+        // TODO: Make .get() call safe here
+        return imageJdbcRepository.findById(UUID.fromString(uuid)).get();
     }
 }
