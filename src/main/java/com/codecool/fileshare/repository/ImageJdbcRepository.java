@@ -1,11 +1,10 @@
 package com.codecool.fileshare.repository;
 
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.nio.ByteBuffer;
+import java.util.Base64;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,7 +43,7 @@ public class ImageJdbcRepository implements ImageRepository{
     }
 
     private UUID uuidFromBase64(String str) {
-        byte[] bytes = Base64.decodeBase64(str);
+        byte[] bytes = Base64.getDecoder().decode(str.getBytes(StandardCharsets.UTF_8));
         return UUID.nameUUIDFromBytes(bytes);
     }
 
