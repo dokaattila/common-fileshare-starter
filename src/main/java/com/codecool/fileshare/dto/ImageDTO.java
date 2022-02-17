@@ -7,5 +7,4 @@ import lombok.*;
 @NoArgsConstructor
 public class ImageDTO {
     String content;
-    String extension;
 }

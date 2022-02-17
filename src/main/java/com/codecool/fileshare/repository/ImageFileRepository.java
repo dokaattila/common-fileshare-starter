@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component("file")
 public class ImageFileRepository implements ImageRepository{
 
-    public String storeImage(String category, String content,String extension){
+    public String storeImage(String category, String content){
         // Optional task: implement store in file here.
         // different categories should be go to different folder.
         // if you want this method to run instead of jdbc version find @Qualifier("jdbc") in
@@ -20,7 +20,4 @@ public class ImageFileRepository implements ImageRepository{
         return null;
     }
 
-    public String readExtension(String uuid) {
-        return null;
-    }
 }
