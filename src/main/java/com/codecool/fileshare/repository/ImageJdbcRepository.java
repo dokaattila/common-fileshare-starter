@@ -5,7 +5,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,8 +51,7 @@ public class ImageJdbcRepository implements ImageRepository{
     public String readImage(String uuid) {
         String sql="SELECT content from image WHERE id::varchar=?;";
         String imageBase64String="";
-        try {
-            Connection conn=dataSource.getConnection();
+        try (Connection conn=dataSource.getConnection()){
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,uuid);
             ResultSet rs = ps.executeQuery();
@@ -62,11 +60,28 @@ public class ImageJdbcRepository implements ImageRepository{
             imageBase64String=new String(bytes, StandardCharsets.UTF_8);
             rs.close();
             ps.close();
-            conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
         return imageBase64String;
+    }
+
+    @Override
+    public String readCategory(String uuid) {
+        String sql="SELECT category from image WHERE id::varchar=?;";
+        String categoryString="";
+        try (Connection conn=dataSource.getConnection()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,uuid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            categoryString=rs.getString(1);
+            rs.close();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return categoryString;
     }
 
     private DataSource initDataSource(){

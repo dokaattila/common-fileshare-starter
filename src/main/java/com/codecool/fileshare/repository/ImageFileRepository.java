@@ -20,4 +20,9 @@ public class ImageFileRepository implements ImageRepository{
         return null;
     }
 
+    @Override
+    public String readCategory(String uuid) {
+        return null;
+    }
+
 }
