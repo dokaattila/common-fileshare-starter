@@ -28,8 +28,7 @@ public class ImageJdbcRepository implements ImageRepository{
         System.out.println(category+"\n"+content);
         String sql="INSERT INTO image (id,category,content,extension) VALUES(?,?,?,?)";
         UUID uuid=null;
-        try {
-            Connection conn=dataSource.getConnection();
+        try(Connection conn=dataSource.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             uuid=uuidFromBase64(content);
             ps.setObject(1,uuid);
@@ -38,7 +37,6 @@ public class ImageJdbcRepository implements ImageRepository{
             ps.setString(4,extension);
             ps.execute();
             ps.close();
-            conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -56,8 +54,7 @@ public class ImageJdbcRepository implements ImageRepository{
     public String readImage(String uuid) {
         String sql="SELECT image from image WHERE id::varchar=?;";
         String imageBase64String="";
-        try {
-            Connection conn=dataSource.getConnection();
+        try(Connection conn=dataSource.getConnection()) {
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,uuid);
             ResultSet rs = ps.executeQuery();
@@ -66,7 +63,6 @@ public class ImageJdbcRepository implements ImageRepository{
             imageBase64String=new String(bytes, StandardCharsets.UTF_8);
             rs.close();
             ps.close();
-            conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
