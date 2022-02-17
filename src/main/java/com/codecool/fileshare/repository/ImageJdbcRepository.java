@@ -45,8 +45,7 @@ public class ImageJdbcRepository implements ImageRepository{
 
     private UUID uuidFromBase64(String str) {
         byte[] bytes = Base64.decodeBase64(str);
-        ByteBuffer bb = ByteBuffer.wrap(bytes);
-        return new UUID(bb.getLong(), bb.getLong());
+        return UUID.nameUUIDFromBytes(bytes);
     }
 
     @Override
