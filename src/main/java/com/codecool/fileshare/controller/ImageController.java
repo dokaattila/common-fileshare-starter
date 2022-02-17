@@ -22,8 +22,4 @@ public class ImageController {
         return imageService.getImage(uuid);
     }
 
-    @PostMapping("/foo")
-    public String printfoo(){
-        return "This is a foo";
-    }
 }
