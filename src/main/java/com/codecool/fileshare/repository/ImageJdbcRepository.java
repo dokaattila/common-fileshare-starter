@@ -1,12 +1,9 @@
 package com.codecool.fileshare.repository;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -27,7 +24,7 @@ public class ImageJdbcRepository implements ImageRepository{
     }
 
     @Override
-    public String storeImage(String category, String content)  {
+    public String storeImage(String category, String content,String extension)  {
         System.out.println(category+"\n"+content);
         String sql="INSERT INTO image (id,category,content,extension) VALUES(?,?,?,?)";
         UUID uuid=null;
@@ -38,7 +35,7 @@ public class ImageJdbcRepository implements ImageRepository{
             ps.setObject(1,uuid);
             ps.setString(2,category);
             ps.setBytes(3,content.getBytes(StandardCharsets.UTF_8));
-            ps.setString(4,"jpg");
+            ps.setString(4,extension);
             ps.execute();
             ps.close();
             conn.close();
@@ -58,7 +55,7 @@ public class ImageJdbcRepository implements ImageRepository{
     @Override
     public String readImage(String uuid) {
         String sql="SELECT image from image WHERE id::varchar=?;";
-        String forTheReturn="";
+        String imageBase64String="";
         try {
             Connection conn=dataSource.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -66,14 +63,34 @@ public class ImageJdbcRepository implements ImageRepository{
             ResultSet rs = ps.executeQuery();
             rs.next();
             byte[] bytes=rs.getBytes(1);
-            forTheReturn=new String(bytes, StandardCharsets.UTF_8);
+            imageBase64String=new String(bytes, StandardCharsets.UTF_8);
             rs.close();
             ps.close();
             conn.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return forTheReturn;
+        return imageBase64String;
+    }
+
+    @Override
+    public String readExtension(String uuid) {
+        String sql="SELECT extension from image WHERE id::varchar=?;";
+        String extensionString="";
+        try {
+            Connection conn=dataSource.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,uuid);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            extensionString=rs.getString(1);
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return extensionString;
     }
 
     private DataSource initDataSource(){
