@@ -24,7 +24,6 @@ public class ImageJdbcRepository implements ImageRepository{
 
     @Override
     public String storeImage(String category, String content)  {
-        System.out.println(category+"\n"+content);
         String sql="INSERT INTO image (id,category,content) VALUES(?,?,?)";
         UUID uuid=null;
         try(Connection conn=dataSource.getConnection()) {

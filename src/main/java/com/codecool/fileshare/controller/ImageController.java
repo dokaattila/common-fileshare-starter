@@ -21,5 +21,4 @@ public class ImageController {
     public ImageDTO getImage(@PathVariable("uuid") String uuid){
         return imageService.getImage(uuid);
     }
-
 }
