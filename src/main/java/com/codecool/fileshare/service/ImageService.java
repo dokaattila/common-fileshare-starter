@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class ImageService {
 
     @Autowired
-    @Qualifier("jdbc")
+    @Qualifier("file")
     ImageRepository imageRepository;
 
     public String storeImage(ImageDTO imageDTO, String category){
