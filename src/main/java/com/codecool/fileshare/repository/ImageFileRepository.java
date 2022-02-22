@@ -18,7 +18,7 @@ public class ImageFileRepository implements ImageRepository {
         UUID uuid = generateUUID(content);
         File file = new File(this.path + uuid);
         try {
-            FileUtils.write(file, category + ":" + content + "\n", StandardCharsets.UTF_8);
+            FileUtils.write(file, category + ":" + content, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +34,7 @@ public class ImageFileRepository implements ImageRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return readFileArray[1];
+        return readFileArray[1].trim();
     }
 
     @Override
