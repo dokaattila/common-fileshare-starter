@@ -37,6 +37,19 @@ public class ImageFileRepository implements ImageRepository {
         return readFileArray[1];
     }
 
+    @Override
+    public String readCategory(String uuid) {
+        File file = new File(this.path + uuid);
+        String[] readFileArray = new String[0];
+        try {
+            String readFile = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
+            readFileArray = readFile.split(":");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readFileArray[0];
+    }
+
     private UUID generateUUID(String str) {
         byte[] bytes = Base64.decodeBase64(str);
         return UUID.nameUUIDFromBytes(bytes);
