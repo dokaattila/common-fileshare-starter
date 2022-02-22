@@ -14,10 +14,10 @@ public class ImageService {
     ImageRepository imageRepository;
 
     public String storeImage(ImageDTO imageDTO, String category){
-        return imageRepository.storeImage(category, imageDTO.getContent());
+        return imageRepository.storeImage(category, imageDTO.getImageData());
     }
 
-    public ImageDTO getImage(String fileName){
-        return  new ImageDTO(imageRepository.readImage(fileName));
+    public ImageDTO getImage(String uuid){
+        return  new ImageDTO(imageRepository.readImage(uuid),imageRepository.readCategory(uuid));
     }
 }

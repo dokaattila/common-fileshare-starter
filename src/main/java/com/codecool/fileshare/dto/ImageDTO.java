@@ -6,5 +6,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageDTO {
-    String content;
+    String imageData;
+    String category;
 }
