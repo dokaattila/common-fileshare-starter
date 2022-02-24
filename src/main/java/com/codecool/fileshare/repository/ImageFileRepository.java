@@ -34,7 +34,7 @@ public class ImageFileRepository implements ImageRepository {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return readFileArray[1].trim();
+        return readFileArray[1];
     }
 
     @Override
